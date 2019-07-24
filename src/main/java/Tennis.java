@@ -11,6 +11,8 @@ public class Tennis {
     public static final List<Integer> POINTS;
     public static final Map<Integer, String> MESSAGES;
     private PlayerPoints[] players;
+    private boolean gameIsOver;
+
 
     static {
         POINTS = new LinkedList<Integer>();
@@ -26,6 +28,8 @@ public class Tennis {
         MESSAGES.put(40, "forty");
         MESSAGES.put(45, "win");
     }
+
+
 
     public Tennis() {
         // Init players points
@@ -47,6 +51,7 @@ public class Tennis {
     }
 
     public void winPoint(int player) throws Exception {
+        checkIfGameIsOver();
         int points = getPoints(player);
 
         //If points 45, +1 win but points are 45 yet
@@ -75,8 +80,18 @@ public class Tennis {
         // Win control
         boolean someCanWin = getPoints(0) == 45 || getPoints(1) == 45;
         if (someCanWin) {
-            if (this.players[0].getWins() > this.players[1].getWins() + 1) return "player 0 wins!";
-            if (this.players[1].getWins() > this.players[0].getWins() + 1) return "player 1 wins!";
+            boolean player0Wins = this.players[0].getWins() > this.players[1].getWins() + 1;
+            boolean player1Wins = this.players[1].getWins() > this.players[0].getWins() + 1;
+            String message = "";
+            if (player0Wins) {
+                message = "player 0 wins!";
+            } else if (player1Wins) {
+                message = "player 1 wins!";
+            }
+            if (player0Wins || player1Wins) {
+                this.gameIsOver = true;
+                return message;
+            }
         }
         // Special cases
         if (getPoints(0) == getPoints(1) && getPoints(0) == 40) return "deuce";
@@ -86,5 +101,10 @@ public class Tennis {
         String finalMessage = this.players[0].getMessagePoints() + " to " + this.players[1].getMessagePoints();
 
         return finalMessage;
+    }
+
+    private void checkIfGameIsOver() throws Exception {
+        score(); // To update gameIsOver is necessary check game state
+        if (this.gameIsOver) throw new Exception("The game is Over");
     }
 }

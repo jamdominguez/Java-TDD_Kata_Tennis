@@ -17,7 +17,6 @@ public class TennisTest {
         for (int i = 0; i < 100; i++) {
             if (!Tennis.POINTS.contains(i)) {
                 game.setPointAndMessage(0, i);
-                Assert.assertEquals(i, game.getPoints(0));
             }
         }
     }
@@ -112,5 +111,15 @@ public class TennisTest {
         Assert.assertEquals("love to forty", game.score());
         game.winPoint(1);
         Assert.assertEquals("player 1 wins!", game.score());
+    }
+
+    @Test(expected = Exception.class)
+    public void ifSomeOneWinsTheGameFinishAndProduceExceptionIfTryPlay() throws Exception {
+        game.winPoint(1); // 15
+        game.winPoint(1); // 30
+        game.winPoint(1); // 40
+        game.winPoint(1); // 45, Win!
+        game.winPoint(1); // must produces a exception
+        game.winPoint(0); // must produce a exception
     }
 }
