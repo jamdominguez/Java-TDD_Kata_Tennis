@@ -122,4 +122,18 @@ public class TennisTest {
         game.winPoint(1); // must produces a exception
         game.winPoint(0); // must produce a exception
     }
+
+    @Test
+    public void checkToString_Lombok() {
+        PlayerPoints p1 = new PlayerPoints(0 , 0 , "love");
+        String out1 = p1.toString();
+        PlayerPoints p2 = new PlayerPoints(1 , 15 , "fifteen");
+        String out2 = p2.toString();
+        System.out.println(out1);
+        System.out.println(out2);
+        Assert.assertEquals(true, out1 instanceof String);
+        Assert.assertEquals(true, out1.length() > 0);
+        Assert.assertEquals(true, out2 instanceof String);
+        Assert.assertEquals(true, out2.length() > 0);
+    }
 }

@@ -13,7 +13,6 @@ public class Tennis {
     private PlayerPoints[] players;
     private boolean gameIsOver;
 
-
     static {
         POINTS = new LinkedList<Integer>();
         POINTS.add(0);
@@ -28,8 +27,6 @@ public class Tennis {
         MESSAGES.put(40, "forty");
         MESSAGES.put(45, "win");
     }
-
-
 
     public Tennis() {
         // Init players points
@@ -78,29 +75,40 @@ public class Tennis {
 
     public String score() {
         // Win control
+        String finalMessage = winControl();
+        if (!"".equals(finalMessage)) return finalMessage;
+        // Special cases
+        finalMessage = specialCasesControl();
+        if (!"".equals(finalMessage)) return finalMessage;
+        // Other cases
+        finalMessage = this.players[0].getMessagePoints() + " to " + this.players[1].getMessagePoints();
+        return finalMessage;
+    }
+
+    private String winControl() {
         boolean someCanWin = getPoints(0) == 45 || getPoints(1) == 45;
+        String winMessage = "";
         if (someCanWin) {
             boolean player0Wins = this.players[0].getWins() > this.players[1].getWins() + 1;
             boolean player1Wins = this.players[1].getWins() > this.players[0].getWins() + 1;
-            String message = "";
             if (player0Wins) {
-                message = "player 0 wins!";
+                winMessage = "player 0 wins!";
             } else if (player1Wins) {
-                message = "player 1 wins!";
+                winMessage = "player 1 wins!";
             }
             if (player0Wins || player1Wins) {
                 this.gameIsOver = true;
-                return message;
             }
         }
-        // Special cases
-        if (getPoints(0) == getPoints(1) && getPoints(0) == 40) return "deuce";
-        if (getPoints(0) == 45 && getPoints(1) == 40) return "advantage for player 0";
-        if (getPoints(0) == 40 && getPoints(1) == 45) return "advantage for player 1";
-        // Other case
-        String finalMessage = this.players[0].getMessagePoints() + " to " + this.players[1].getMessagePoints();
+        return winMessage;
+    }
 
-        return finalMessage;
+    private String specialCasesControl() {
+        String specialMessage = "";
+        if (getPoints(0) == getPoints(1) && getPoints(0) == 40) specialMessage = "deuce";
+        if (getPoints(0) == 45 && getPoints(1) == 40) specialMessage = "advantage for player 0";
+        if (getPoints(0) == 40 && getPoints(1) == 45) specialMessage = "advantage for player 1";
+        return specialMessage;
     }
 
     private void checkIfGameIsOver() throws Exception {
