@@ -28,6 +28,7 @@ public class Tennis {
     }
 
     public Tennis() {
+        // Init players points
         this.players = new PlayerPoints[PLAYERS];
         this.players[0] = new PlayerPoints(); // Player 0
         this.players[1] = new PlayerPoints(); // Player 1
@@ -37,21 +38,30 @@ public class Tennis {
         return this.players[player].getPoints();
     }
 
-    public void setPoint(int player, int points) throws Exception {
+    public void setPointAndMessage(int player, int points) throws Exception {
+        // Error control
         if (!POINTS.contains(points)) throw new Exception("Invalid points: " + points);
+        // Setting points
         this.players[player].setPoints(points);
+        this.players[player].setMessagePoints(MESSAGES.get(points));
     }
 
     public void winPoint(int player) throws Exception {
-        int points = this.players[player].getPoints();
-        deucePointsControl(player, points);
+        int points = getPoints(player);
+        boolean pointsUpdated = deucePointsControl(player, points);
+
+
+
         int index = POINTS.indexOf(points);
         int newPoints = POINTS.get(index + 1);
-        this.players[player].setPoints(newPoints);
+        setPointAndMessage(player, points);
+        // Control when equals and advantages
         this.players[player].setWins(this.players[player].getWins() + 1);
+        //System.out.println("Player0W["+this.players[0].getWins()+"] Player1W["+this.players[1].getWins()+"]");
     }
 
-    private void deucePointsControl(int player, int points) throws Exception {
+    private boolean deucePointsControl(int player, int points) throws Exception {
+        System.out.println("deucePointsControl player["+player+"] points["+points+"]");
         if (points == 40) {
             int otherPlayer;
             int otherPlayerPoints;
@@ -62,30 +72,26 @@ public class Tennis {
                 otherPlayer = 0;
                 otherPlayerPoints = getPoints(otherPlayer);
             }
-            if (otherPlayerPoints == 45) setPoint(otherPlayer, 40);
+            if (otherPlayerPoints == 45) setPointAndMessage(otherPlayer, 40);
+            System.out.println("player["+player+"] points["+points+"] otherPlayer["+otherPlayer+"] otherPlayerPoints["+otherPlayerPoints+"]");
+            System.out.println("Player0["+this.players[0].getPoints()+"] Player1["+this.players[1].getPoints()+"]");
+            return true;
         }
+        return false;
     }
 
     public String score() {
-        // Get points like message
-        String[] messages = new String[PLAYERS];
-        for (int i = 0; i < this.players.length; i++) {
-            if (MESSAGES.containsKey(getPoints(i))) {
-                messages[i] = MESSAGES.get(getPoints(i));
-            }
-        }
-        // Build returned message
-        StringBuilder finalMessage = new StringBuilder();
-        for (int i= 0; i < messages.length - 1; i++) {
-            finalMessage.append(messages[i]).append(" to ");
-        }
-        finalMessage.append(messages[messages.length - 1]);
-        // Special cases
+        //System.out.println("Player0_p["+this.players[0].getPoints()+"] Player0_m["+this.players[0].getMessagePoints()+"]");
+        //System.out.println("Player1_p["+this.players[1].getPoints()+"] Player1_m["+this.players[1].getMessagePoints()+"]");
+        // Win control
         if (this.players[0].getWins() > this.players[1].getWins() + 1) return "player 0 wins!";
         if (this.players[1].getWins() > this.players[0].getWins() + 1) return "player 1 wins!";
-        if ("forty to forty".equals(finalMessage.toString())) return "deuce";
-        if ("win to forty".equals(finalMessage.toString())) return "advantage for player 0";
-        if ("forty to win".equals(finalMessage.toString())) return "advantage for player 1";
+        // Special cases
+        if (getPoints(0) == getPoints(1) && getPoints(0) == 40) return "deuce";
+        if (getPoints(0) == 45 && getPoints(1) == 40) return "advantage for player 0";
+        if (getPoints(0) == 40 && getPoints(1) == 45) return "advantage for player 1";
+        // Other case
+        String finalMessage = this.players[0].getMessagePoints() + " to " + this.players[1].getMessagePoints();
 
         return finalMessage.toString();
     }
