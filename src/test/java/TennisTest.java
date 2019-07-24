@@ -81,10 +81,36 @@ public class TennisTest {
         game.winPoint(0);
         // equals again
         Assert.assertEquals("deuce", game.score());
-/*        game.winPoint(0);
+        game.winPoint(0);
         Assert.assertEquals("advantage for player 0", game.score());
         game.winPoint(0);
-        // the game finish and reset the points, player 0 wins the game
-        Assert.assertEquals("player 0 wins!", game.score());*/
+        // player 0 wins the game
+        Assert.assertEquals("player 0 wins!", game.score());
+    }
+
+    @Test
+    public void simulatePlayer0WinBy45TO0() throws Exception {
+        Assert.assertEquals("love to love", game.score());
+        game.winPoint(0);
+        Assert.assertEquals("fifteen to love", game.score());
+        game.winPoint(0);
+        Assert.assertEquals("thirty to love", game.score());
+        game.winPoint(0);
+        Assert.assertEquals("forty to love", game.score());
+        game.winPoint(0);
+        Assert.assertEquals("player 0 wins!", game.score());
+    }
+
+    @Test
+    public void simulatePlayer1WinBy45TO0() throws Exception {
+        Assert.assertEquals("love to love", game.score());
+        game.winPoint(1);
+        Assert.assertEquals("love to fifteen", game.score());
+        game.winPoint(1);
+        Assert.assertEquals("love to thirty", game.score());
+        game.winPoint(1);
+        Assert.assertEquals("love to forty", game.score());
+        game.winPoint(1);
+        Assert.assertEquals("player 1 wins!", game.score());
     }
 }
