@@ -36,22 +36,11 @@ public class TennisTest {
     @Test(expected = Exception.class)
     public void pointsDifferentesTo_0_15_30_45_produceException() throws Exception {
         Tennis game = new Tennis();
-        List<Integer> validPoints = Tennis.VALID_POINTS;
-        game.setPoint(0, 1);
-        Assert.assertEquals(1, game.getPoints(0));
-
-        game.setPoint(0, 2);
-        Assert.assertEquals(2, game.getPoints(0));
-
-        game.setPoint(0, 16);
-        Assert.assertEquals(16, game.getPoints(0));
-
-/*        for (int i = 0; i < 100; i++) {
-            if (!validPoints.contains(i)) {
+        for (int i = 0; i < 100; i++) {
+            if (!Tennis.VALID_POINTS.contains(i)) {
                 game.setPoint(0, i);
                 Assert.assertEquals(i, game.getPoints(0));
             }
-        }*/
+        }
     }
-
 }
