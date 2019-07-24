@@ -21,4 +21,7 @@ static {
         if (!VALID_POINTS.contains(points)) throw new Exception("Invalid points");
         this.points = points;
     }
+
+    public void winPoint(int player) {
+    }
 }

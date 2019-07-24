@@ -24,4 +24,19 @@ public class TennisTest {
             Assert.assertEquals(points.intValue(), game.getPoints(0));
         }
     }
+
+    @Test
+    public void toStartTheGameThePlayersHave0Points() {
+        Tennis game = new Tennis();
+        Assert.assertEquals(0, game.getPoints(0));
+        Assert.assertEquals(0, game.getPoints(1));
+    }
+
+    @Test
+    public void ifWinApointIncreaseTheCorretValue() {
+        Tennis game = new Tennis();
+        Assert.assertEquals(0, game.getPoints(0));
+        game.winPoint(0);
+        Assert.assertEquals(15, game.getPoints(0));
+    }
 }
