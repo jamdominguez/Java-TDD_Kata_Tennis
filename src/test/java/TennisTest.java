@@ -48,7 +48,7 @@ public class TennisTest {
     }
 
     @Test
-    public void ifPlayerHas40AndWinMusControlNoException() throws Exception {
+    public void ifPlayerHas40AndWinMustControlNoException() throws Exception {
         game.setPointAndMessage(0, 40);
         game.winPoint(0);
         Assert.assertEquals(45, game.getPoints(0));

@@ -9,7 +9,7 @@ import java.util.Map;
 public class Tennis {
     public static final int PLAYERS = 2;
     public static final List<Integer> POINTS;
-    public static final Map<Integer,String> MESSAGES;
+    public static final Map<Integer, String> MESSAGES;
     private PlayerPoints[] players;
 
     static {
@@ -30,8 +30,8 @@ public class Tennis {
     public Tennis() {
         // Init players points
         this.players = new PlayerPoints[PLAYERS];
-        this.players[0] = new PlayerPoints(); // Player 0
-        this.players[1] = new PlayerPoints(); // Player 1
+        this.players[0] = new PlayerPoints(0, 0, MESSAGES.get(0)); // Player 0
+        this.players[1] = new PlayerPoints(0, 0, MESSAGES.get(0)); // Player 1
     }
 
     public int getPoints(int player) {
@@ -48,44 +48,36 @@ public class Tennis {
 
     public void winPoint(int player) throws Exception {
         int points = getPoints(player);
-        boolean pointsUpdated = deucePointsControl(player, points);
 
+        //If points 45, +1 win but points are 45 yet
+        if (points == 45) {
+            this.players[player].setWins(this.players[player].getWins() + 1);
+            return; // go out the function
+        }
+        //If points 40, check if the other player has 45, reduce it to 40
+        if (points == 40) {
+            int otherPlayer = 0;
+            if (player == 0) otherPlayer = 1;
+            if (getPoints(otherPlayer) == 45) {
+                setPointAndMessage(otherPlayer, 40);
+                return; // go out function
+            }
+        }
 
-
+        // Update points and increase wins
         int index = POINTS.indexOf(points);
         int newPoints = POINTS.get(index + 1);
-        setPointAndMessage(player, points);
-        // Control when equals and advantages
+        setPointAndMessage(player, newPoints);
         this.players[player].setWins(this.players[player].getWins() + 1);
-        //System.out.println("Player0W["+this.players[0].getWins()+"] Player1W["+this.players[1].getWins()+"]");
-    }
-
-    private boolean deucePointsControl(int player, int points) throws Exception {
-        System.out.println("deucePointsControl player["+player+"] points["+points+"]");
-        if (points == 40) {
-            int otherPlayer;
-            int otherPlayerPoints;
-            if(player == 0) {
-                otherPlayer = 1;
-                otherPlayerPoints = getPoints(otherPlayer);
-            } else {
-                otherPlayer = 0;
-                otherPlayerPoints = getPoints(otherPlayer);
-            }
-            if (otherPlayerPoints == 45) setPointAndMessage(otherPlayer, 40);
-            System.out.println("player["+player+"] points["+points+"] otherPlayer["+otherPlayer+"] otherPlayerPoints["+otherPlayerPoints+"]");
-            System.out.println("Player0["+this.players[0].getPoints()+"] Player1["+this.players[1].getPoints()+"]");
-            return true;
-        }
-        return false;
     }
 
     public String score() {
-        //System.out.println("Player0_p["+this.players[0].getPoints()+"] Player0_m["+this.players[0].getMessagePoints()+"]");
-        //System.out.println("Player1_p["+this.players[1].getPoints()+"] Player1_m["+this.players[1].getMessagePoints()+"]");
         // Win control
-        if (this.players[0].getWins() > this.players[1].getWins() + 1) return "player 0 wins!";
-        if (this.players[1].getWins() > this.players[0].getWins() + 1) return "player 1 wins!";
+        boolean someCanWin = getPoints(0) == 45 || getPoints(1) == 45;
+        if (someCanWin) {
+            if (this.players[0].getWins() > this.players[1].getWins() + 1) return "player 0 wins!";
+            if (this.players[1].getWins() > this.players[0].getWins() + 1) return "player 1 wins!";
+        }
         // Special cases
         if (getPoints(0) == getPoints(1) && getPoints(0) == 40) return "deuce";
         if (getPoints(0) == 45 && getPoints(1) == 40) return "advantage for player 0";
@@ -93,6 +85,6 @@ public class Tennis {
         // Other case
         String finalMessage = this.players[0].getMessagePoints() + " to " + this.players[1].getMessagePoints();
 
-        return finalMessage.toString();
+        return finalMessage;
     }
 }
