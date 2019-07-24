@@ -8,6 +8,7 @@ Setup:
  - IDE IntelliJ Idea
  - Maven (IntellliJ Idea)
  - JUnit 4
+ - Lombok
 
 Reference TDD Katas: [TDD Kata](https://www.programmingwithwolfgang.com/tdd-kata/)
 
