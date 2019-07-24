@@ -13,7 +13,6 @@ public class TennisTest {
 
     @Test(expected = Exception.class)
     public void pointsDifferentesTo_0_15_30_40_produceException() throws Exception {
-        Tennis game = new Tennis();
         for (int i = 0; i < 100; i++) {
             if (!Tennis.POINTS.contains(i)) {
                 game.setPointAndMessage(0, i);
