@@ -11,7 +11,6 @@ static {
     VALID_POINTS.add(15);
     VALID_POINTS.add(30);
     VALID_POINTS.add(40);
-    VALID_POINTS.add(45);
 }
 
     public int getPoints(int player) {
