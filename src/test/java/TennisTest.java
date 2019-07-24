@@ -45,9 +45,21 @@ public class TennisTest {
     }
 
     @Test
+    public void ifPlayerHas40AndWinMusControlNoException() throws Exception {
+        Tennis game = new Tennis();
+        game.setPoint(0,40);
+        game.winPoint(0);
+        Assert.assertEquals(40, game.getPoints(0));
+    }
+
+    @Test
     public void scoreReturnsMessageAccordingPlayersPoints() throws Exception {
         Tennis game = new Tennis();
         Assert.assertEquals("love to love", game.score());
+        game.winPoint(0);
+        Assert.assertEquals("fifteen to love", game.score());
+        game.winPoint(1);
+        Assert.assertEquals("fifteen to fifteen", game.score());
     }
 
 

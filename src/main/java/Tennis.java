@@ -25,8 +25,15 @@ static {
     public void winPoint(int player) throws Exception {
         int points = getPoints(player);
         int index = VALID_POINTS.indexOf(points);
-        int newPoints = VALID_POINTS.get(index + 1);
+        boolean isLastGamePoint = index == VALID_POINTS.size() - 1;
+        int newPoints =  isLastGamePoint ? VALID_POINTS.get(index) : VALID_POINTS.get(index + 1); //last point control
         //System.out.println("points["+points+"] index["+index+"] newPoints["+newPoints+"]");
         setPoint(player, newPoints);
+    }
+
+    public String score() {
+        if (getPoints(0) == 15 && getPoints(1) == 15) return "fifteen to fifteen";
+        if (getPoints(0) == 15) return "fifteen to love";
+        return "love to love";
     }
 }
