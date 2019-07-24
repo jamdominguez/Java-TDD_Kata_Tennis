@@ -43,4 +43,13 @@ public class TennisTest {
             }
         }
     }
+
+    @Test
+    public void validPoints0_15_30_45() throws Exception {
+        Tennis game = new Tennis();
+        for (Integer points : Tennis.VALID_POINTS) {
+            game.setPoint(0, points.intValue());
+            Assert.assertEquals(points.intValue(), game.getPoints(0));
+        }
+    }
 }
