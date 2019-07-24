@@ -112,7 +112,7 @@ public class Tennis {
     }
 
     private void checkIfGameIsOver() throws Exception {
-        score(); // To update gameIsOver is necessary check game state
+        winControl(); // To update gameIsOver is necessary check game state
         if (this.gameIsOver) throw new Exception("The game is Over");
     }
 }
