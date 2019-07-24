@@ -3,11 +3,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Tennis for 2 player (requirements)
+ */
 public class Tennis {
     public static final int PLAYERS = 2;
     public static final List<Integer> POINTS;
     public static final Map<Integer,String> MESSAGES;
-    private int[] players; //store players points
+    private PlayerPoints[] players;
 
     static {
         POINTS = new LinkedList<Integer>();
@@ -25,27 +28,30 @@ public class Tennis {
     }
 
     public Tennis() {
-        this.players = new int[PLAYERS];
+        this.players = new PlayerPoints[PLAYERS];
+        this.players[0] = new PlayerPoints(); // Player 0
+        this.players[1] = new PlayerPoints(); // Player 1
     }
 
     public int getPoints(int player) {
-        return this.players[player];
+        return this.players[player].getPoints();
     }
 
     public void setPoint(int player, int points) throws Exception {
         if (!POINTS.contains(points)) throw new Exception("Invalid points: " + points);
-        this.players[player] = points;
+        this.players[player].setPoints(points);
     }
 
     public void winPoint(int player) throws Exception {
-        int points = getPoints(player);
-        deuceControl(player, points);
+        int points = this.players[player].getPoints();
+        deucePointsControl(player, points);
         int index = POINTS.indexOf(points);
         int newPoints = POINTS.get(index + 1);
-        setPoint(player, newPoints);
+        this.players[player].setPoints(newPoints);
+        this.players[player].setWins(this.players[player].getWins() + 1);
     }
 
-    private void deuceControl(int player, int points) throws Exception {
+    private void deucePointsControl(int player, int points) throws Exception {
         if (points == 40) {
             int otherPlayer;
             int otherPlayerPoints;
@@ -74,10 +80,12 @@ public class Tennis {
             finalMessage.append(messages[i]).append(" to ");
         }
         finalMessage.append(messages[messages.length - 1]);
-
+        // Special cases
+        if (this.players[0].getWins() > this.players[1].getWins() + 1) return "player 0 wins!";
+        if (this.players[1].getWins() > this.players[0].getWins() + 1) return "player 1 wins!";
         if ("forty to forty".equals(finalMessage.toString())) return "deuce";
-        if ("forty to win".equals(finalMessage.toString())) return "player 1 wins!";
-        if ("win to forty".equals(finalMessage.toString())) return "player 0 wins!";
+        if ("win to forty".equals(finalMessage.toString())) return "advantage for player 0";
+        if ("forty to win".equals(finalMessage.toString())) return "advantage for player 1";
 
         return finalMessage.toString();
     }
