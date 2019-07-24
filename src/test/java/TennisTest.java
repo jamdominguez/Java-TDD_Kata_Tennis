@@ -33,10 +33,22 @@ public class TennisTest {
     }
 
     @Test
-    public void ifWinApointIncreaseTheCorretValue() {
+    public void ifWinApointIncreaseTheCorretValue() throws Exception {
         Tennis game = new Tennis();
         Assert.assertEquals(0, game.getPoints(0));
         game.winPoint(0);
         Assert.assertEquals(15, game.getPoints(0));
+        game.winPoint(0);
+        Assert.assertEquals(30, game.getPoints(0));
+        game.winPoint(0);
+        Assert.assertEquals(40, game.getPoints(0));
     }
+
+    @Test
+    public void scoreReturnsMessageAccordingPlayersPoints() throws Exception {
+        Tennis game = new Tennis();
+        Assert.assertEquals("love to love", game.score());
+    }
+
+
 }

@@ -18,10 +18,15 @@ static {
     }
 
     public void setPoint(int player, int points) throws Exception {
-        if (!VALID_POINTS.contains(points)) throw new Exception("Invalid points");
+        if (!VALID_POINTS.contains(points)) throw new Exception("Invalid points: " + points);
         this.points = points;
     }
 
-    public void winPoint(int player) {
+    public void winPoint(int player) throws Exception {
+        int points = getPoints(player);
+        int index = VALID_POINTS.indexOf(points);
+        int newPoints = VALID_POINTS.get(index + 1);
+        //System.out.println("points["+points+"] index["+index+"] newPoints["+newPoints+"]");
+        setPoint(player, newPoints);
     }
 }
