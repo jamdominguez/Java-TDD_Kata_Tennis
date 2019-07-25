@@ -1,7 +1,8 @@
 # Java-TDD_Kata_Tennis
 Simple java local application, using Test Driven Development methodology.
 
-**Level: MEDIUM**
+**Level: MEDIUM**<br>
+**Status: Completed**
 
 Setup:
  - JDK 1.8.0_191
